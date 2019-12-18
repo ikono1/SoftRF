@@ -135,9 +135,14 @@ void setup()
   Serial.println(SoC->getResetInfo()); Serial.println("");
 
   EEPROM_setup();
-
-  ThisAircraft.addr = SoC->getChipId() & 0x00FFFFFF;
-
+  if (ThisAircraft.addr_type == ADDR_TYPE_ANONYMOUS)
+  {  
+    ThisAircraft.addr = SoC->getChipId() & 0x00FFFFFF; /* generate anonymous address*/
+  }
+  else
+  {
+    ThisAircraft.addr = ThisAircraft.addr & 0x00FFFFFF; /* truncate the input of user to a suitable form */
+  }
   hw_info.rf = RF_setup();
 
   if (hw_info.model    == SOFTRF_MODEL_PRIME_MK2 &&
