@@ -504,20 +504,19 @@ void handleSettings() {
 <th align=left>Aircraft address type</th>
 <td align=right>
 <select name='AddrType'>
-<option %s value='%d'>Random</option>
-<option %s value='%d'>FLARM</option>
-<option %s value='%d'>OGN</option>
-<option %s value='%d'>ICAO</option>
-</select>
-</td>
-</tr>
-</tr>
-<tr>
-<th align=left>Aircraft address</th>
-<td align=right>
-<input id=type='text' name="ACFTAddr" id='ICA' placeholder="HEX address" %s>
-</td>
-</tr>
+<option %s value='%d'>ANONYMOUS</option>\
+<option %s value='%d'>FLARM</option>\
+<option %s value='%d'>ICAO</option>"),
+</select>\
+</td>\
+</tr>\
+</tr>\
+<tr>\
+<th align=left>Aircraft address</th>\
+<td align=right>\
+<input id=type='text' name="ACFTAddr" id='ICA' placeholder="HEX address" %x>\
+</td>\
+</tr>\
 </table>\
 <p align=center><INPUT type='submit' value='Save and restart'></p>\
 </form>\
@@ -526,9 +525,14 @@ void handleSettings() {
   (settings->power_save == POWER_SAVE_NONE ? "selected" : ""), POWER_SAVE_NONE,
   (settings->power_save == POWER_SAVE_WIFI ? "selected" : ""), POWER_SAVE_WIFI,
   (!settings->stealth ? "checked" : "") , (settings->stealth ? "checked" : ""),
-  (!settings->no_track ? "checked" : "") , (settings->no_track ? "checked" : "")
+  (!settings->no_track ? "checked" : "") , (settings->no_track ? "checked" : ""),
+  (settings->AddrType == ADDR_TYPE_ANONYMOUS ? "selected" : ""), ADDR_TYPE_ANONYMOUS,
+  (settings->AddrType == ADDR_TYPE_FLARM ? "selected" : ""), ADDR_TYPE_FLARM,
+  (settings->AddrType == ADDR_TYPE_ICAO ? "selected" : ""), ADDR_TYPE_ICAO,
+/*  (settings->AddrType == ADDR_TYPE_ICAO ? "selected" : ""), ADDR_TYPE_ICAO, */
   );
 
+              
   SoC->swSer_enableRx(false);
   server.sendHeader(String(F("Cache-Control")), String(F("no-cache, no-store, must-revalidate")));
   server.sendHeader(String(F("Pragma")), String(F("no-cache")));
@@ -722,6 +726,8 @@ PSTR("<html>\
 <tr><th align=left>Stealth</th><td align=right>%s</td></tr>\
 <tr><th align=left>No track</th><td align=right>%s</td></tr>\
 <tr><th align=left>Power save</th><td align=right>%d</td></tr>\
+<tr><th align=left>Address type</th><td align=right>%d</td></tr>\
+<tr><th align=left>ACFT Address</th><td align=right>%s</td></tr>\
 </table>\
 <hr>\
   <p align=center><h1 align=center>Restart is in progress... Please, wait!</h1></p>\
@@ -734,7 +740,7 @@ PSTR("<html>\
   BOOL_STR(settings->nmea_l), BOOL_STR(settings->nmea_s),
   settings->nmea_out, settings->gdl90, settings->d1090,
   BOOL_STR(settings->stealth), BOOL_STR(settings->no_track),
-  settings->power_save
+  settings->power_save,settings->AddrType,HEX_STR(this_aircraft->addr)
   );
   SoC->swSer_enableRx(false);
   server.send ( 200, "text/html", Input_temp );
