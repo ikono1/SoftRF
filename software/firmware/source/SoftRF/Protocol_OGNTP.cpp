@@ -125,7 +125,7 @@ size_t ogntp_encode(void *pkt, ufo_t *this_aircraft) {
 
   ogn_tx_pkt.Packet.HeaderWord=0;
   ogn_tx_pkt.Packet.Header.Address = this_aircraft->addr;
-  ogn_tx_pkt.Packet.Header.AddrType = ADDR_TYPE_ANONYMOUS;
+  ogn_tx_pkt.Packet.Header.AddrType = this_aircraft->AddressType;
   ogn_tx_pkt.Packet.calcAddrParity();
 
   ogn_tx_pkt.Packet.Position.AcftType = (int16_t) this_aircraft->aircraft_type;
