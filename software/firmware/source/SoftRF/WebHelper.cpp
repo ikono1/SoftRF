@@ -500,6 +500,24 @@ void handleSettings() {
 <input type='radio' name='no_track' value='1' %s>On\
 </td>\
 </tr>\
+<tr>
+<th align=left>Aircraft address type</th>
+<td align=right>
+<select name='AddrType'>
+<option %s value='%d'>Random</option>
+<option %s value='%d'>FLARM</option>
+<option %s value='%d'>OGN</option>
+<option %s value='%d'>ICAO</option>
+</select>
+</td>
+</tr>
+</tr>
+<tr>
+<th align=left>Aircraft address</th>
+<td align=right>
+<input id=type='text' name="ACFTAddr" id='ICA' placeholder="HEX address" %s>
+</td>
+</tr>
 </table>\
 <p align=center><INPUT type='submit' value='Save and restart'></p>\
 </form>\
